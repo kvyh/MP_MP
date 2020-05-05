@@ -1,1 +1,1 @@
-# MP_MP
+Coding bits for Matt Parker's Math Puzzles.
