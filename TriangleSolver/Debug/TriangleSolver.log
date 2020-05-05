@@ -1,0 +1,5 @@
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\Microsoft.Common.CurrentVersion.targets(5148,5): warning MSB3061: Unable to delete file "C:\Users\karlv\source\repos\TriangleSolver\Debug\TriangleSolver.exe". Access to the path 'C:\Users\karlv\source\repos\TriangleSolver\Debug\TriangleSolver.exe' is denied.
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppClean.targets(76,5): warning : Access to the path 'c:\users\karlv\source\repos\trianglesolver\debug\trianglesolver.exe' is denied.
+  TriangleSolver.cpp
+C:\Users\karlv\source\repos\TriangleSolver\TriangleSolver.cpp(166,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+LINK : fatal error LNK1104: cannot open file 'C:\Users\karlv\source\repos\TriangleSolver\Debug\TriangleSolver.exe'

@@ -1,0 +1,3 @@
+﻿  InverseTriangleSolver_v2.cpp
+C:\Users\karlv\source\repos\InverseTriangleSolver_v2\InverseTriangleSolver_v2.cpp(237,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  InverseTriangleSolver_v2.vcxproj -> C:\Users\karlv\source\repos\InverseTriangleSolver_v2\Debug\InverseTriangleSolver_v2.exe

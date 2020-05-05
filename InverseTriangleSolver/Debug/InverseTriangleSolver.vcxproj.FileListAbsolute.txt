@@ -1,0 +1,4 @@
+C:\Users\karlv\source\repos\InverseTriangleSolver\Debug\InverseTriangleSolver.exe
+C:\Users\karlv\source\repos\InverseTriangleSolver\Debug\InverseTriangleSolver.pdb
+C:\Users\karlv\source\repos\InverseTriangleSolver\Debug\InverseTriangleSolver.exe.lastcodeanalysissucceeded
+C:\Users\karlv\source\repos\InverseTriangleSolver\Debug\NativeCodeAnalysis.read.1.tlog
