@@ -1,0 +1,7 @@
+﻿  InverseTriangleSolver_v2.cpp
+C:\Users\karlv\Git projects\MP_MP\InverseTriangleSolver_v2\InverseTriangleSolver_v2.cpp(298,23): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 25 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  InverseTriangleSolver_v2.vcxproj -> C:\Users\karlv\Git projects\MP_MP\InverseTriangleSolver_v2\Release\InverseTriangleSolver_v2.exe

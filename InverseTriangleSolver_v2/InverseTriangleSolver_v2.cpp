@@ -19,11 +19,12 @@ const int Stones = (Side_length * (Side_length + 1)) / 2;
 int Shortest = Stones;
 int Long_chain = 0;
 
-int* unique_starts(int side, int* starts, int* p_len_starts);
+int* unique_starts(int side, int* starts, int* p_len_starts, std::array<int[6], (int)(Stones / 3)>& first_moves);
 template <size_t N>
 std::array<int[3][3], N> valid_moves(int side, std::array<int[3][3], N>& moves);
 template <size_t N>
 void print_foreward(int side, int* starts, int len_starts, std::array<int[3][3], N> moves);
+bool* perform_move(bool brd[Stones], bool new_board[Stones], std::array<int[3], Stones - 2>& future_moves, int on_move, int mv_st, int mv_mid, int mv_end);
 template <size_t N>
 void play_game(bool board[Stones], std::array<int[3], Stones - 2>& future_moves, int on_move, std::array<std::array<int[3], Stones - 2>, Max_listed>& solutions, int* p_num_sols, std::array<int[3][3], N> moves, int max_listed);
 template <size_t N>
@@ -34,7 +35,10 @@ int main()
 {
     int len_starts = 0;
     int arr_starts[(int)(Stones / 3)];
-    unique_starts(Side_length, arr_starts, &len_starts);
+    // first moves listing the middle piece of the move going to a start
+    std::array<int[6], (int) (Stones / 3)> uq_first_moves{};
+    for (int i = 0; i < (int)(Stones / 3); i += 1) { for (int j = 0; j < 6; j += 1) { uq_first_moves[i][j] = 0; } }
+    unique_starts(Side_length, arr_starts, &len_starts, uq_first_moves);
 
     std::array<int[3][3], Stones> moves{};
     valid_moves(Side_length, moves);
@@ -45,14 +49,30 @@ int main()
     int num_solutions = 0;
 
     for (int i = 0; i < len_starts; i += 1) {
-        bool board[Stones];
-        for (int st = 0; st < Stones; st += 1) {
-            board[st] = true;
-        }
-        board[arr_starts[i]] = false;
         std::array<int[3], Stones - 2> fut_moves{};
-        chained_end(board, fut_moves, 0, solutions, &num_solutions,
-            moves, Max_listed, 0, Stones / 3 + 3);
+        for (int j = 0; j < 6; j += 1) {
+            bool board[Stones];
+            for (int st = 0; st < Stones; st += 1) {
+                board[st] = true;
+            }
+            board[arr_starts[i]] = false;
+            int move_mid = uq_first_moves[i][j];
+            if (!move_mid == 0) {
+                for (int k = 0; k < 3; k += 1) {
+                    if (moves[move_mid][k][0] == arr_starts[i]) {
+                        perform_move(board, board, fut_moves, 0, moves[move_mid][k][2], move_mid, arr_starts[i]);
+                        chained_end(board, fut_moves, 1, solutions, &num_solutions,
+                            moves, Max_listed, 0, Stones / 3 + 3);
+                    }
+                    else if (moves[move_mid][k][2] == arr_starts[i]) {
+                        perform_move(board, board, fut_moves, 0, moves[move_mid][k][0], move_mid, arr_starts[i]);
+                        chained_end(board, fut_moves, 1, solutions, &num_solutions,
+                            moves, Max_listed, 0, Stones / 3 + 3);
+                    }
+
+                }
+            }
+        }
     }
 
     print_result(solutions, num_solutions, Max_listed);
@@ -177,12 +197,12 @@ void play_game(bool board[Stones], std::array<int[3], Stones - 2>& future_moves,
 
 template <size_t N>
 void chained_end(bool board[Stones], std::array<int[3], Stones - 2>& future_moves, int on_move, std::array<std::array<int[3], Stones - 2>, Max_listed>& solutions, int* p_num_sols, std::array<int[3][3], N> moves, int max_listed, int chains, int chained_len) {
-    /*
+    
     if (bsum(board, Stones) == Stones - 4) {
         std::cout << future_moves[2][0] << future_moves[2][1] << future_moves[2][2] << "\t";
         std::cout << future_moves[1][0] << future_moves[1][1] << future_moves[1][2] << "\t";
         std::cout << future_moves[0][0] << future_moves[0][1] << future_moves[0][2] << "\n";
-    }*/
+    }
     
     // can iterate through i = 1; i < Stones - 1. First and last stone can't be the middle of a move.
     for (int i = 1; i < Stones - 1; i += 1) {
@@ -228,7 +248,48 @@ void chained_end(bool board[Stones], std::array<int[3], Stones - 2>& future_move
     }
 }
 
-int* unique_starts(int side, int* starts, int* p_len_starts) {
+void first_mvs(int side, int* p_len_starts, std::array<int[6], (int)(Stones / 3)>& first_moves, int start, int layer, int row) {
+    // For each start, list the middles of unique valid moves for the start
+    int layer_peak = 2 * layer * (layer + 1);
+    // Center of triangle
+    if (side > 6 && row == 0 && (3 * layer == side - 1)) {
+        first_moves[*p_len_starts][0] = start + 1;
+    }
+    // peak of a layer
+    else if (row == 0) {
+        if (side > 2 * layer + 2) {
+            first_moves[*p_len_starts][0] = start + 2 * (layer + 1);
+        }
+        if (layer >= 2) {
+            first_moves[*p_len_starts][1] = start + 1;
+            first_moves[*p_len_starts][2] = start - 2 * layer;
+        }
+    }
+    // middle of a side
+    else if ((side - (layer * 3) - 1) / 2. == row) {
+        int node = row * row;
+        first_moves[*p_len_starts][0] = start + 1;
+        first_moves[*p_len_starts][1] = start + layer * 2 + row + 1;
+        if (layer >= 2) {
+            first_moves[*p_len_starts][2] = start - 1;
+        }
+    }
+    else {
+        first_moves[*p_len_starts][0] = start + row + 2 * layer + 1;
+        first_moves[*p_len_starts][1] = start + row + 2 * layer + 2;
+        first_moves[*p_len_starts][2] = start + 1;
+        if (row + layer >= 2) {
+            first_moves[*p_len_starts][3] = start - row - 2 * layer;
+        }
+        if (layer + row >= 2) {
+            first_moves[*p_len_starts][4] = start - 1;
+            first_moves[*p_len_starts][5] = start - row - 2 * layer - 1;
+        }
+    }
+}
+
+
+int* unique_starts(int side, int* starts, int* p_len_starts, std::array<int[6], (int)(Stones / 3)>& first_moves) {
     int idx = 0;
     int layer_peak = 0;
     // // std::cout << side / 3. << "   " << ceil(side / 3.);
@@ -237,11 +298,15 @@ int* unique_starts(int side, int* starts, int* p_len_starts) {
         int row_range = ceil((side - i * 3) / 2.);
         for (int row = 0; row < row_range; row += 1) {
             starts[*p_len_starts] = layer_peak + row * (i * 2) + (row * (row + 1)) / 2;
+            first_mvs(side, p_len_starts, first_moves, starts[*p_len_starts], i, row);
+
             *p_len_starts += 1;
         }
     }
     return starts;
 }
+
+
 
 template <size_t N>
 std::array<int[3][3], N> valid_moves(int side, std::array<int[3][3], N>& moves) {

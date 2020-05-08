@@ -1,2 +1,4 @@
 C:\Users\karlv\source\repos\InverseTriangleSolver_v2\Debug\InverseTriangleSolver_v2.exe
 C:\Users\karlv\source\repos\InverseTriangleSolver_v2\Debug\InverseTriangleSolver_v2.pdb
+C:\Users\karlv\Git projects\MP_MP\InverseTriangleSolver_v2\Debug\InverseTriangleSolver_v2.exe
+C:\Users\karlv\Git projects\MP_MP\InverseTriangleSolver_v2\Debug\InverseTriangleSolver_v2.pdb
