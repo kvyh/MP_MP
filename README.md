@@ -4,9 +4,13 @@ Coding bits for Matt Parker's Math Puzzles.
 # Triangle Solitaire
 
 0
+
 1 2
+
 3 4 5
+
 ...
+
 #### Shortest solution examples by side length:
 
 length 4 (5 chains): remove 1; [6-1] [0-3] [8-6-1] [5-0-3-5] [9-2]
