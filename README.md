@@ -3,12 +3,9 @@ Coding bits for Matt Parker's Math Puzzles.
 
 # Triangle Solitaire
 
-0
-
-1 2
-
-3 4 5
-
+0  
+1 2  
+3 4 5  
 ...
 
 #### Shortest solution examples by side length:
