@@ -12,12 +12,14 @@ For position i, moves[i] = list of moves passing through i (e.g. moves[4] = [[1,
 #include <iostream>
 #include <cstdlib>
 #include <array>
+#include <time.h>
 
 const int Max_listed = 15;
 const int Side_length = 7;
 const int Stones = (Side_length * (Side_length + 1)) / 2;
 int Shortest = Stones;
 int Long_chain = 0;
+int Shortest_from_start[Stones];
 
 int* unique_starts(int side, int* starts, int* p_len_starts, std::array<int[6], (int)(Stones / 3)>& first_moves);
 template <size_t N>
@@ -48,7 +50,11 @@ int main()
     std::array<std::array<int[3], Stones - 2>, Max_listed> solutions{};
     int num_solutions = 0;
 
-    for (int i = 0; i < len_starts; i += 1) {
+    for (int stt = 0; stt < Stones; stt += 1) {
+        Shortest_from_start[stt] = Stones;
+    }
+    for (int i = len_starts - 1; i >= 0; i -= 1) {
+    //for (int i = 0; i < len_starts; i += 1) {
         std::array<int[3], Stones - 2> fut_moves{};
         for (int j = 0; j < 6; j += 1) {
             bool board[Stones];
@@ -73,8 +79,10 @@ int main()
                 }
             }
         }
+        for (int stt = 0; stt < Stones; stt += 1) {
+            std::cout << "start " << stt << ": " << Shortest_from_start[stt] << "\n";
+        }
     }
-
     print_result(solutions, num_solutions, Max_listed);
 }
 
@@ -119,6 +127,10 @@ void add_solution(std::array<int[3], Stones - 2>& future_moves, std::array<std::
             max_chain = chain_len;
         }
     }
+    if (Shortest_from_start[future_moves[Stones - 3][2]] > length) {
+        Shortest_from_start[future_moves[Stones - 3][2]] = length;
+    }
+
     if (length < Shortest) {
         std::cout << "New Shortest(" << length << "): ";
         for (int j = Stones - 3; j >= 0; j -= 1) {
@@ -199,9 +211,11 @@ template <size_t N>
 void chained_end(bool board[Stones], std::array<int[3], Stones - 2>& future_moves, int on_move, std::array<std::array<int[3], Stones - 2>, Max_listed>& solutions, int* p_num_sols, std::array<int[3][3], N> moves, int max_listed, int chains, int chained_len) {
     
     if (bsum(board, Stones) == Stones - 4) {
+        time_t time = time();
         std::cout << future_moves[2][0] << future_moves[2][1] << future_moves[2][2] << "\t";
         std::cout << future_moves[1][0] << future_moves[1][1] << future_moves[1][2] << "\t";
-        std::cout << future_moves[0][0] << future_moves[0][1] << future_moves[0][2] << "\n";
+        std::cout << future_moves[0][0] << future_moves[0][1] << future_moves[0][2] << "\t";
+        std::cout << "time reached: " << time << "\n";
     }
     
     // can iterate through i = 1; i < Stones - 1. First and last stone can't be the middle of a move.
